@@ -1,0 +1,54 @@
+popularity:
+  metric: "purchase_count"  # purchase_count, unique_users
+  time_decay: true
+  decay_factor: 0.95
+
+als:
+  factors: 128
+  regularization: 0.01
+  iterations: 30
+  alpha: 40.0
+  seed: 42
+  num_threads: 4
+
+two_tower:
+  user_dim: 64
+  item_dim: 64
+  embedding_dim: 128
+  hidden_dims: [256, 128]
+  dropout: 0.2
+  learning_rate: 0.001
+  batch_size: 2048
+  num_epochs: 20
+  early_stopping_patience: 3
+  temperature: 0.07
+  num_negatives: 4
+  seed: 42
+
+lightgbm:
+  objective: "lambdarank"
+  metric: "ndcg"
+  ndcg_eval_at: [12]
+  num_leaves: 127
+  learning_rate: 0.05
+  n_estimators: 500
+  min_child_samples: 20
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 5
+  reg_alpha: 0.1
+  reg_lambda: 0.1
+  num_threads: 4
+  seed: 42
+  early_stopping_rounds: 30
+  verbose: -1
+  label_gain: null  # auto-computed
+
+retrieval:
+  top_k_per_retriever: 100
+  total_candidates: 200
+  deduplicate: true
+
+inference:
+  top_k: 12
+  batch_size: 512

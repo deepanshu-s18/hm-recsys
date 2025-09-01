@@ -1,0 +1,34 @@
+{
+  "als": {
+    "user_embedding_shape": [
+      90246,
+      128
+    ],
+    "item_embedding_shape": [
+      84220,
+      128
+    ],
+    "user_norm_mean": 7.679093837738037,
+    "user_norm_std": 5.0074462890625,
+    "item_norm_mean": 0.045631684362888336,
+    "item_norm_std": 0.051310036331415176,
+    "embedding_dim": 128
+  },
+  "two_tower": {
+    "user_embedding_shape": [
+      90246,
+      128
+    ],
+    "item_embedding_shape": [
+      84220,
+      128
+    ],
+    "user_norm_mean": 1.0,
+    "user_norm_std": 4.4062023363267144e-08,
+    "item_norm_mean": 1.0,
+    "item_norm_std": 4.338039261142512e-08,
+    "embedding_dim": 128,
+    "mean_pairwise_user_cosine_sim": 0.13108126819133759,
+    "note": "Embeddings should be unit-normalized (norms ~1.0)"
+  }
+}

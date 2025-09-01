@@ -1,0 +1,25 @@
+defaults:
+  - data: hm
+  - model: default
+  - pipeline: default
+  - experiment: baseline
+  - _self_
+
+project:
+  name: "hm-recsys"
+  version: "1.0.0"
+  seed: 42
+  device: "cpu"  # cpu or mps
+
+paths:
+  root: "."
+  data: "data/raw"
+  artifacts: "artifacts"
+  models: "artifacts/models"
+  metrics: "artifacts/metrics"
+  figures: "artifacts/figures"
+  reports: "artifacts/reports"
+
+logging:
+  level: "INFO"
+  format: "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"

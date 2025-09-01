@@ -1,0 +1,14 @@
+{
+  "popularity": {
+    "mean_novelty": 11.10429152244753
+  },
+  "als": {
+    "mean_novelty": 16.493350268363063
+  },
+  "two_tower": {
+    "mean_novelty": 21.57324775466266
+  },
+  "two_tower_plus_ranker": {
+    "mean_novelty": 14.892119003552988
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "total_pipeline_seconds": 8406.619203090668,
+  "per_model": {
+    "popularity": {
+      "evaluation_seconds": 0,
+      "n_users_evaluated": 0,
+      "training_seconds": 0
+    },
+    "als": {
+      "evaluation_seconds": 0,
+      "n_users_evaluated": 0,
+      "training_seconds": 0
+    },
+    "two_tower": {
+      "evaluation_seconds": 0,
+      "n_users_evaluated": 0,
+      "training_seconds": 0
+    },
+    "two_tower_plus_ranker": {
+      "evaluation_seconds": 0,
+      "n_users_evaluated": 0,
+      "training_seconds": 0
+    }
+  }
+}

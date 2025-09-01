@@ -1,0 +1,71 @@
+# Data (never commit raw or processed datasets)
+data/raw/
+data/processed/
+data_processed_31m_backup/
+
+# Large model artifacts, binaries, and heavy caches
+artifacts/models/
+artifacts/ablation/
+artifacts/logs/
+artifacts_31m_backup/
+*.pkl
+*.npy
+*.npz
+*.parquet
+*.faiss
+*.index
+*.pt
+*.pth
+*.bin
+*.txt.lgbm
+*.zip
+*.tar.gz
+
+# Python cache & builds
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_metadata
+
+# Testing & Coverage
+.pytest_cache/
+.coverage*
+htmlcov/
+coverage.xml
+
+# Hydra outputs & logs
+outputs/
+multirun/
+.hydra/
+logs/
+*.log
+
+# Temporary / Scratch scripts
+tmp/
+temp/
+fix_ablation_timeout.py
+fix_and_run.sh
+loo_ranker_final.py
+run_ranker_only.py

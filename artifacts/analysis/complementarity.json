@@ -1,0 +1,29 @@
+{
+  "n_common_users": 48762,
+  "pairwise_jaccard": {
+    "popularity_vs_als": 0.0414,
+    "popularity_vs_two_tower": 0.0056,
+    "als_vs_two_tower": 0.0808
+  },
+  "exclusive_recall": {
+    "popularity": {
+      "exclusive_users": 1323,
+      "exclusive_rate": 0.9416,
+      "total_hits": 1405
+    },
+    "als": {
+      "exclusive_users": 473,
+      "exclusive_rate": 0.7792,
+      "total_hits": 607
+    },
+    "two_tower": {
+      "exclusive_users": 146,
+      "exclusive_rate": 0.6986,
+      "total_hits": 209
+    }
+  },
+  "union_hit_rate": {
+    "users_with_any_hit": 2078,
+    "rate": 0.0426
+  }
+}

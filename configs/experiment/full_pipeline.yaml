@@ -1,0 +1,16 @@
+experiment:
+  name: "full_pipeline"
+  description: "Full multi-stage: All retrievers + LightGBM ranker"
+  group: "full_system"
+  tags: ["full", "multistage", "ranker"]
+
+retrievers:
+  popularity:
+    enabled: true
+  als:
+    enabled: true
+  two_tower:
+    enabled: true
+
+ranker:
+  enabled: true

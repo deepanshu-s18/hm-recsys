@@ -1,0 +1,26 @@
+dataset:
+  name: "hm_fashion"
+  source: "kaggle"
+  raw_path: "data/raw"
+  processed_path: "data/processed"
+
+sampling:
+  n_interactions: 100000
+  seed: 42
+  strategy: "temporal"  # temporal stratified
+
+splits:
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  strategy: "chronological"  # NEVER random
+
+min_interactions:
+  user: 5       # min interactions per user to keep
+  item: 3       # min interactions per item to keep
+
+features:
+  use_article_features: true
+  use_customer_features: true
+  use_temporal_features: true
+  use_price_features: true

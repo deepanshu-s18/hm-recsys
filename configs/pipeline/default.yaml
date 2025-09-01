@@ -1,0 +1,56 @@
+stages:
+  - name: "data_preparation"
+    enabled: true
+  - name: "candidate_generation"
+    enabled: true
+  - name: "feature_engineering"
+    enabled: true
+  - name: "ranking"
+    enabled: true
+  - name: "evaluation"
+    enabled: true
+
+retrievers:
+  popularity:
+    enabled: true
+    weight: 0.15
+  als:
+    enabled: true
+    weight: 0.30
+  lightfm:
+    enabled: false   # disabled due to Python 3.12 incompatibility
+    weight: 0.25
+  two_tower:
+    enabled: true
+    weight: 0.55
+
+evaluation:
+  metrics:
+    - recall@12
+    - precision@12
+    - map@12
+    - mrr
+    - ndcg@12
+    - hit_rate
+    - coverage
+    - novelty
+    - diversity
+    - personalization
+    - long_tail_recall
+    - catalog_coverage
+    - popularity_bias
+    - cold_start_recall
+  bootstrap_samples: 1000
+  confidence_level: 0.95
+  n_jobs: 4
+
+checkpointing:
+  enabled: true
+  save_every_n_epochs: 5
+  keep_last_n: 3
+
+artifacts:
+  save_predictions: true
+  save_embeddings: true
+  save_features: true
+  save_metrics: true

@@ -1,0 +1,16 @@
+experiment:
+  name: "baseline_popularity"
+  description: "Popularity-only baseline"
+  group: "retriever_ablation"
+  tags: ["baseline", "popularity"]
+
+retrievers:
+  popularity:
+    enabled: true
+  als:
+    enabled: false
+  two_tower:
+    enabled: false
+
+ranker:
+  enabled: false

@@ -1,0 +1,31 @@
+{
+  "popularity": {
+    "p50_ms": 0.1346906297840178,
+    "p95_ms": 0.23550785530824267,
+    "p99_ms": 0.8035562344128256,
+    "mean_ms": 0.173721456900239,
+    "n_users_batch": 100,
+    "n_runs": 20
+  },
+  "als": {
+    "p50_ms": 2.3685281246434897,
+    "p95_ms": 4.884585096966478,
+    "p99_ms": 7.434171347226943,
+    "mean_ms": 2.7961187083274126,
+    "n_users_batch": 100,
+    "n_runs": 20
+  },
+  "two_tower": {
+    "p50_ms": 2.8071772889234126,
+    "p95_ms": 4.960096834227444,
+    "p99_ms": 6.16641570292413,
+    "mean_ms": 3.236060540773906,
+    "n_users_batch": 100,
+    "n_runs": 20
+  },
+  "notes": {
+    "measurement": "wall-clock time for get_candidates on batch of 100 users",
+    "platform": "linux x86_64, CPU-only",
+    "units": "milliseconds per user"
+  }
+}

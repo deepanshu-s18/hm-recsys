@@ -1,0 +1,86 @@
+{
+  "segments": {
+    "cold": {
+      "n_users": 21822,
+      "max_interactions": 7.0
+    },
+    "warm": {
+      "n_users": 40306,
+      "max_interactions": 31.0
+    },
+    "heavy": {
+      "n_users": 19801,
+      "min_interactions": 31.0
+    }
+  },
+  "model_performance_by_segment": {
+    "popularity": {
+      "cold": {
+        "mean_recall": 0.006475791902705158,
+        "std_recall": 0.05226156023972247,
+        "n_users": 8620
+      },
+      "warm": {
+        "mean_recall": 0.005369594524352047,
+        "std_recall": 0.045786924754410235,
+        "n_users": 19077
+      },
+      "heavy": {
+        "mean_recall": 0.0036511499334873007,
+        "std_recall": 0.028170232319676816,
+        "n_users": 15464
+      }
+    },
+    "als": {
+      "cold": {
+        "mean_recall": 0.005391668974546472,
+        "std_recall": 0.05401523801066077,
+        "n_users": 8620
+      },
+      "warm": {
+        "mean_recall": 0.003036700456175146,
+        "std_recall": 0.03480908470384615,
+        "n_users": 19077
+      },
+      "heavy": {
+        "mean_recall": 0.0010508742467622463,
+        "std_recall": 0.019340712942022626,
+        "n_users": 15464
+      }
+    },
+    "two_tower": {
+      "cold": {
+        "mean_recall": 0.001428017554757694,
+        "std_recall": 0.02545370570502028,
+        "n_users": 8620
+      },
+      "warm": {
+        "mean_recall": 0.0007554434533981726,
+        "std_recall": 0.016898338631450904,
+        "n_users": 19077
+      },
+      "heavy": {
+        "mean_recall": 0.000532510589862784,
+        "std_recall": 0.009898713603591461,
+        "n_users": 15464
+      }
+    },
+    "two_tower_plus_ranker": {
+      "cold": {
+        "mean_recall": 0.0063197844743659425,
+        "std_recall": 0.0556733976783097,
+        "n_users": 8620
+      },
+      "warm": {
+        "mean_recall": 0.004585589590905019,
+        "std_recall": 0.043553615484760326,
+        "n_users": 19077
+      },
+      "heavy": {
+        "mean_recall": 0.001869635694828153,
+        "std_recall": 0.024419464260141886,
+        "n_users": 15464
+      }
+    }
+  }
+}

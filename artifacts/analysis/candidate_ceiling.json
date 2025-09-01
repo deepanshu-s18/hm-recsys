@@ -1,0 +1,32 @@
+{
+  "popularity": {
+    "mean_recall_at_12": 0.004981951837713665,
+    "max_recall_at_12": 1.0,
+    "pct_users_with_any_hit": 0.028813420286288503,
+    "n_users": 48762
+  },
+  "als": {
+    "mean_recall_at_12": 0.002782626148818555,
+    "max_recall_at_12": 1.0,
+    "pct_users_with_any_hit": 0.012448217874574464,
+    "n_users": 48762
+  },
+  "two_tower": {
+    "mean_recall_at_12": 0.0007389933374978392,
+    "max_recall_at_12": 1.0,
+    "pct_users_with_any_hit": 0.004286124441163201,
+    "n_users": 48762
+  },
+  "two_tower_plus_ranker": {
+    "mean_recall_at_12": 0.003854189123969775,
+    "max_recall_at_12": 1.0,
+    "pct_users_with_any_hit": 0.01843648742873549,
+    "n_users": 48762
+  },
+  "fusion_stats": {
+    "train_candidates": 16385800,
+    "val_candidates": 9616200,
+    "avg_candidates_per_user": 200,
+    "n_retrievers": 3
+  }
+}
