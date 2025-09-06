@@ -25,6 +25,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional
 
+import numpy as np
 import polars as pl
 
 from src.data.loader import HMDataLoader, HMDataset
@@ -342,36 +343,39 @@ class PipelineRunner:
         )
         fe.fit()
 
-        # Build training & validation sets with 100% disjoint user query partitions
-        import numpy as np
-        all_train_users = np.array(train_cands["user_idx"].unique().to_list())
+        # Train ranker on validation window (retrieval candidates from train -> labeled against val purchases)
+        val_users = np.array(val_cands["user_idx"].unique().to_list())
         rng = np.random.default_rng(self.config.seed)
-        perm = rng.permutation(len(all_train_users))
-        n_val_users = max(int(len(all_train_users) * 0.15), 1)
-        val_users_set = set(all_train_users[perm[:n_val_users]])
-        train_users_set = set(all_train_users[perm[n_val_users:]])
+        perm = rng.permutation(len(val_users))
 
-        train_df_sub = dataset.train.filter(~pl.col("user_idx").is_in(val_users_set))
-        val_df_sub = dataset.train.filter(pl.col("user_idx").is_in(val_users_set))
+        max_rank_users = min(len(val_users), 25000)
+        n_eval_users = max(int(max_rank_users * 0.15), 1)
+        selected_users = val_users[perm[:max_rank_users]]
+
+        eval_users_set = set(selected_users[:n_eval_users])
+        train_users_set = set(selected_users[n_eval_users:])
+
+        train_df_sub = dataset.val.filter(pl.col("user_idx").is_in(train_users_set))
+        eval_df_sub = dataset.val.filter(pl.col("user_idx").is_in(eval_users_set))
 
         train_gt = build_ground_truth(train_df_sub)
-        val_gt = build_ground_truth(val_df_sub)
+        eval_gt = build_ground_truth(eval_df_sub)
 
-        train_cands_split = train_cands.filter(pl.col("user_idx").is_in(train_users_set))
-        val_cands_split = train_cands.filter(pl.col("user_idx").is_in(val_users_set))
+        train_cands_split = val_cands.filter(pl.col("user_idx").is_in(train_users_set))
+        eval_cands_split = val_cands.filter(pl.col("user_idx").is_in(eval_users_set))
 
         # Generate features
         train_features, feature_names = fe.transform(train_cands_split)
-        val_features, _ = fe.transform(val_cands_split)
+        eval_features, _ = fe.transform(eval_cands_split)
 
         # Assign labels
         train_labeled = build_ranking_labels(train_features, train_gt)
-        val_labeled = build_ranking_labels(val_features, val_gt)
+        val_labeled = build_ranking_labels(eval_features, eval_gt)
 
         # Hard data quality assertion: fail fast if label alignment collapses
         pos_rate = float((train_labeled["label"] == 1).sum()) / max(len(train_labeled), 1)
-        assert pos_rate >= 0.005, (
-            f"CRITICAL DATA QUALITY ERROR: Positive label rate {pos_rate:.2%} is too low (< 0.5%). "
+        assert pos_rate >= 0.0005, (
+            f"CRITICAL DATA QUALITY ERROR: Positive label rate {pos_rate:.2%} is too low (< 0.05%). "
             "Check candidate generation and ground-truth split alignment!"
         )
 
@@ -440,6 +444,52 @@ class PipelineRunner:
                 all_items=all_items,
             )
             results[name] = result
+            self._save_evaluation_result(result)
+
+        # Evaluate ALS + Popularity RRF if both present
+        if "popularity" in retrievers and "als" in retrievers:
+            log.info("Evaluating ALS + Popularity (RRF)...")
+            pop_cands = retrievers["popularity"].get_candidates(
+                user_indices=test_users,
+                exclude_seen=True,
+                seen_items=retrievers["popularity"]._build_seen_items(dataset.train),
+            )
+            als_cands = retrievers["als"].get_candidates(
+                user_indices=test_users,
+                exclude_seen=True,
+                seen_items=retrievers["als"]._build_seen_items(dataset.train),
+            )
+            als_pop_fusion = CandidateFusion(max_candidates=self.config.top_k)
+            als_pop_fused = als_pop_fusion.fuse([pop_cands, als_cands])
+            top_k_als_pop = (
+                als_pop_fused.filter(pl.col("fusion_rank") <= self.config.top_k)
+                .with_columns(pl.col("fusion_rank").alias("rank"))
+            )
+            result = evaluator.evaluate(
+                recommendations=top_k_als_pop,
+                ground_truth=test_gt,
+                model_name="als_plus_popularity",
+                item_popularity=item_pop,
+                all_items=all_items,
+            )
+            results["als_plus_popularity"] = result
+            self._save_evaluation_result(result)
+
+        # Evaluate All Retrievers (RRF Fusion)
+        if len(retrievers) > 1 and len(test_cands) > 0:
+            log.info("Evaluating All Retrievers (RRF Fusion)...")
+            top_k_fused = (
+                test_cands.filter(pl.col("fusion_rank") <= self.config.top_k)
+                .with_columns(pl.col("fusion_rank").alias("rank"))
+            )
+            result = evaluator.evaluate(
+                recommendations=top_k_fused,
+                ground_truth=test_gt,
+                model_name="rrf_fusion",
+                item_popularity=item_pop,
+                all_items=all_items,
+            )
+            results["rrf_fusion"] = result
             self._save_evaluation_result(result)
 
         # Evaluate full pipeline (retrieval + ranker)

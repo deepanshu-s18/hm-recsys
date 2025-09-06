@@ -499,16 +499,16 @@ class HMDataLoader:
         """
         user_map_df = pl.DataFrame(
             {"customer_id": list(user2idx.keys()), "user_idx": list(user2idx.values())},
-            schema={"customer_id": pl.Utf8, "user_idx": pl.Int32}
+            schema={"customer_id": pl.Utf8, "user_idx": pl.Int64}
         )
         item_map_df = pl.DataFrame(
             {"article_id": list(item2idx.keys()), "item_idx": list(item2idx.values())},
-            schema={"article_id": pl.Utf8, "item_idx": pl.Int32}
+            schema={"article_id": pl.Utf8, "item_idx": pl.Int64}
         )
 
         df = (
-            df.join(user_map_df, on="customer_id", how="left")
-            .join(item_map_df, on="article_id", how="left")
+            df.join(user_map_df, on="customer_id", how="left", coalesce=True)
+            .join(item_map_df, on="article_id", how="left", coalesce=True)
         )
         return df
 

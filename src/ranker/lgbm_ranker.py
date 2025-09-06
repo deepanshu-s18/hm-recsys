@@ -79,7 +79,7 @@ class LGBMRanker:
         reg_alpha: float = 0.1,
         reg_lambda: float = 0.1,
         early_stopping_rounds: int = 30,
-        num_threads: int = 4,
+        num_threads: int = 2,
         seed: int = 42,
     ) -> None:
         self.n_estimators = n_estimators
@@ -181,7 +181,8 @@ class LGBMRanker:
                 "min_child_samples": self.min_child_samples,
                 "reg_alpha": self.reg_alpha,
                 "reg_lambda": self.reg_lambda,
-                "num_threads": self.num_threads,
+                "num_threads": 1,
+                "force_col_wise": True,
                 "seed": self.seed,
                 "verbose": -1,
                 "label_gain": list(range(max(int(y_train.max()) + 1, 2))),

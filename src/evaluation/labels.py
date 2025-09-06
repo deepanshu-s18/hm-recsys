@@ -36,6 +36,10 @@ def build_ground_truth(
         .agg(pl.len().alias("n_purchases"))
         .filter(pl.col("n_purchases") >= min_purchases)
         .select(["user_idx", "item_idx"])
+        .with_columns([
+            pl.col("user_idx").cast(pl.Int64),
+            pl.col("item_idx").cast(pl.Int64),
+        ])
     )
     log.info(
         f"Ground truth: {len(gt):,} (user, item) pairs, "
@@ -60,12 +64,21 @@ def build_ranking_labels(
     Returns:
         Candidates DataFrame with added 'label' column (0 or 1).
     """
+    candidates = candidates.with_columns([
+        pl.col("user_idx").cast(pl.Int64),
+        pl.col("item_idx").cast(pl.Int64),
+    ])
+    ground_truth = ground_truth.with_columns([
+        pl.col("user_idx").cast(pl.Int64),
+        pl.col("item_idx").cast(pl.Int64),
+    ])
+
     gt_with_label = ground_truth.with_columns(
         pl.lit(1).cast(pl.Int8).alias("label")
     )
 
     labeled = candidates.join(
-        gt_with_label, on=["user_idx", "item_idx"], how="left"
+        gt_with_label, on=["user_idx", "item_idx"], how="left", coalesce=True
     ).with_columns(
         pl.col("label").fill_null(0).cast(pl.Int8)
     )
@@ -110,13 +123,22 @@ def compute_recall_ceiling(
     Returns:
         Dict with per-user ceiling statistics.
     """
+    candidates = candidates.with_columns([
+        pl.col("user_idx").cast(pl.Int64),
+        pl.col("item_idx").cast(pl.Int64),
+    ])
+    ground_truth = ground_truth.with_columns([
+        pl.col("user_idx").cast(pl.Int64),
+        pl.col("item_idx").cast(pl.Int64),
+    ])
+
     candidates_set = (
         candidates.select(["user_idx", "item_idx"])
         .with_columns(pl.lit(1).alias("in_candidates"))
     )
 
     gt_with_coverage = ground_truth.join(
-        candidates_set, on=["user_idx", "item_idx"], how="left"
+        candidates_set, on=["user_idx", "item_idx"], how="left", coalesce=True
     ).with_columns(
         pl.col("in_candidates").fill_null(0)
     )

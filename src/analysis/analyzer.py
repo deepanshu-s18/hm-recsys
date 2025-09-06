@@ -153,10 +153,13 @@ class ColdStartAnalyzer:
         user_activity = (
             train.group_by("user_idx")
             .agg(pl.len().alias("n_train_interactions"))
+            .with_columns(pl.col("user_idx").cast(pl.Int64))
         )
 
         # Join activity to ground truth
-        gt_with_activity = ground_truth.join(user_activity, on="user_idx", how="left")
+        gt_with_activity = ground_truth.with_columns(
+            pl.col("user_idx").cast(pl.Int64)
+        ).join(user_activity, on="user_idx", how="left", coalesce=True)
         gt_with_activity = gt_with_activity.with_columns(
             pl.col("n_train_interactions").fill_null(0)
         )
@@ -238,8 +241,8 @@ class UserSegmentAnalyzer:
         user_map_df = pl.DataFrame({
             "customer_id": list(user_id_map.keys()),
             "user_idx": list(user_id_map.values()),
-        })
-        customers_mapped = customers.join(user_map_df, on="customer_id", how="inner")
+        }).with_columns(pl.col("user_idx").cast(pl.Int64))
+        customers_mapped = customers.join(user_map_df, on="customer_id", how="inner", coalesce=True)
 
         # Age segments
         if "age" in customers_mapped.columns:

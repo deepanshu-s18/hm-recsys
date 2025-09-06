@@ -178,8 +178,8 @@ class FeatureEngineer:
 
             # Ensure consistent integer types for join keys
             df = df.with_columns([
-                pl.col("user_idx").cast(pl.Int32),
-                pl.col("item_idx").cast(pl.Int32),
+                pl.col("user_idx").cast(pl.Int64),
+                pl.col("item_idx").cast(pl.Int64),
             ])
 
             # Retrieval features
@@ -187,19 +187,19 @@ class FeatureEngineer:
 
             # Item features
             if self._item_stats is not None:
-                item_stats = self._item_stats.with_columns(pl.col("item_idx").cast(pl.Int32))
-                df = df.join(item_stats, on="item_idx", how="left")
+                item_stats = self._item_stats.with_columns(pl.col("item_idx").cast(pl.Int64))
+                df = df.join(item_stats, on="item_idx", how="left", coalesce=True)
             if self._article_features is not None and len(self._article_features) > 0:
-                article_feats = self._article_features.with_columns(pl.col("item_idx").cast(pl.Int32))
-                df = df.join(article_feats, on="item_idx", how="left")
+                article_feats = self._article_features.with_columns(pl.col("item_idx").cast(pl.Int64))
+                df = df.join(article_feats, on="item_idx", how="left", coalesce=True)
 
             # User features
             if self._user_stats is not None:
-                user_stats = self._user_stats.with_columns(pl.col("user_idx").cast(pl.Int32))
-                df = df.join(user_stats, on="user_idx", how="left")
+                user_stats = self._user_stats.with_columns(pl.col("user_idx").cast(pl.Int64))
+                df = df.join(user_stats, on="user_idx", how="left", coalesce=True)
             if self._customer_features is not None and len(self._customer_features) > 0:
-                cust_feats = self._customer_features.with_columns(pl.col("user_idx").cast(pl.Int32))
-                df = df.join(cust_feats, on="user_idx", how="left")
+                cust_feats = self._customer_features.with_columns(pl.col("user_idx").cast(pl.Int64))
+                df = df.join(cust_feats, on="user_idx", how="left", coalesce=True)
 
             # Cross features
             df = self._add_cross_features(df)
@@ -236,8 +236,8 @@ class FeatureEngineer:
         max_date = self.train["t_dat"].max()
 
         train = self.train.with_columns(
-            pl.col("item_idx").cast(pl.Int32),
-            pl.col("user_idx").cast(pl.Int32),
+            pl.col("item_idx").cast(pl.Int64),
+            pl.col("user_idx").cast(pl.Int64),
         )
 
         stats = (
@@ -267,8 +267,8 @@ class FeatureEngineer:
 
         stats = (
             stats
-            .join(recent_30, on="item_idx", how="left")
-            .join(recent_7, on="item_idx", how="left")
+            .join(recent_30, on="item_idx", how="left", coalesce=True)
+            .join(recent_7, on="item_idx", how="left", coalesce=True)
         )
 
         # Derived features
@@ -312,8 +312,8 @@ class FeatureEngineer:
         """
         max_date = self.train["t_dat"].max()
         train = self.train.with_columns(
-            pl.col("user_idx").cast(pl.Int32),
-            pl.col("item_idx").cast(pl.Int32),
+            pl.col("user_idx").cast(pl.Int64),
+            pl.col("item_idx").cast(pl.Int64),
         )
 
         stats = (
@@ -380,14 +380,14 @@ class FeatureEngineer:
         articles = self.articles.clone()
 
         if "item_idx" in articles.columns:
-            articles = articles.with_columns(pl.col("item_idx").cast(pl.Int32))
+            articles = articles.with_columns(pl.col("item_idx").cast(pl.Int64))
         else:
             item_id_map = (
                 self.train.select(["article_id", "item_idx"])
                 .unique()
-                .with_columns(pl.col("item_idx").cast(pl.Int32))
+                .with_columns(pl.col("item_idx").cast(pl.Int64))
             )
-            articles = articles.join(item_id_map, on="article_id", how="inner")
+            articles = articles.join(item_id_map, on="article_id", how="inner", coalesce=True)
 
         # Encode key categoricals
         cat_cols = {
@@ -434,14 +434,14 @@ class FeatureEngineer:
         customers = self.customers.clone()
 
         if "user_idx" in customers.columns:
-            customers = customers.with_columns(pl.col("user_idx").cast(pl.Int32))
+            customers = customers.with_columns(pl.col("user_idx").cast(pl.Int64))
         else:
             user_id_map = (
                 self.train.select(["customer_id", "user_idx"])
                 .unique()
-                .with_columns(pl.col("user_idx").cast(pl.Int32))
+                .with_columns(pl.col("user_idx").cast(pl.Int64))
             )
-            customers = customers.join(user_id_map, on="customer_id", how="inner")
+            customers = customers.join(user_id_map, on="customer_id", how="inner", coalesce=True)
 
         result = customers.select(["user_idx"])
 

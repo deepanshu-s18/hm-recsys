@@ -86,7 +86,10 @@ class CandidateFusion:
 
         with timer("CandidateFusion.fuse", samples=sum(len(d) for d in candidate_dfs)):
             # Combine all candidates
-            all_candidates = pl.concat(candidate_dfs, how="diagonal")
+            all_candidates = pl.concat(candidate_dfs, how="diagonal").with_columns([
+                pl.col("user_idx").cast(pl.Int64),
+                pl.col("item_idx").cast(pl.Int64),
+            ])
 
             # Compute RRF scores per (user, item)
             fused = self._compute_rrf_scores(all_candidates)
