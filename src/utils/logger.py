@@ -81,3 +81,15 @@ def get_logger(name: str) -> "logger":
         >>> log.info("Starting module")
     """
     return logger.bind(module=name)
+
+
+def get_trace_logger(name: str) -> "logger":
+    """Get a TRACE-level logger for verbose debugging (disabled in production).
+
+    Args:
+        name: Module name (typically __name__).
+
+    Returns:
+        Loguru logger bound with module context at TRACE level.
+    """
+    return logger.bind(module=name, level="TRACE")
