@@ -148,3 +148,26 @@ def timeit(func: Callable) -> Callable:
         return result
 
     return wrapper
+
+
+# Thresholds for latency tier classification (milliseconds)
+LATENCY_FAST_MS: float = 10.0    # < 10ms: real-time serving
+LATENCY_MEDIUM_MS: float = 100.0  # 10–100ms: interactive latency
+LATENCY_SLOW_MS: float = 1000.0  # > 100ms: batch/offline acceptable
+
+
+def classify_latency(elapsed_seconds: float) -> str:
+    """Classify elapsed time into serving latency tier.
+
+    Args:
+        elapsed_seconds: Measured elapsed time in seconds.
+
+    Returns:
+        One of 'FAST' (<10ms), 'MEDIUM' (10-100ms), or 'SLOW' (>100ms).
+    """
+    ms = elapsed_seconds * 1000
+    if ms < LATENCY_FAST_MS:
+        return "FAST"
+    elif ms < LATENCY_MEDIUM_MS:
+        return "MEDIUM"
+    return "SLOW"
