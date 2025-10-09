@@ -79,3 +79,18 @@ clean:
 	rm -rf $(ARTIFACTS_DIR) data/processed __pycache__ .pytest_cache
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	find . -name "*.pyc" -delete 2>/dev/null || true
+
+.PHONY: ablation profile clean-artifacts
+
+ablation:  ## Run 7-experiment component ablation study
+	python scripts/run_ablation.py --fast
+
+profile:   ## Profile pipeline latency (100 users)
+	python -m cProfile -o artifacts/profile.out scripts/train.py \
+		--n-interactions 10000 --no-save
+	python -c "import pstats; p = pstats.Stats('artifacts/profile.out'); p.sort_stats('cumulative'); p.print_stats(20)"
+
+clean-artifacts:  ## Remove generated model files (keeps metrics and figures)
+	rm -rf artifacts/models/als/ artifacts/models/two_tower/ \
+		artifacts/models/lgbm_ranker/ artifacts/models/popularity/
+	@echo "Cleaned model artifacts. Re-run train.py to regenerate."
