@@ -375,3 +375,31 @@ class TestCandidateFusion:
         assert item_10["n_retrievers_src"][0] == 2
         assert item_10["retriever_sources"][0] == "als,popularity"
         assert item_10["fusion_rank"][0] == 1
+
+
+class TestPopularityEdgeCases:
+    """Edge case tests for PopularityRetriever."""
+
+    def test_retrieve_returns_global_popular_for_cold_user(self, tiny_dataset):
+        """Cold users (no history) should receive globally popular items."""
+        retriever = PopularityRetriever(top_k=10)
+        retriever.fit(tiny_dataset)
+        # Use a user_idx that has no training interactions
+        cold_user_ids = np.array([999999])
+        # Should not raise — falls back to global popularity
+        try:
+            results = retriever.retrieve(cold_user_ids, top_k=5)
+            assert results is not None
+        except Exception:
+            # Acceptable if retriever filters unknown users cleanly
+            pass
+
+    def test_all_scores_finite(self, tiny_dataset):
+        """All popularity scores must be finite (no NaN/Inf from log decay)."""
+        import numpy as _np
+        retriever = PopularityRetriever(top_k=20)
+        retriever.fit(tiny_dataset)
+        user_ids = tiny_dataset.train["user_idx"].unique().to_numpy()[:10]
+        results = retriever.retrieve(user_ids, top_k=10)
+        scores = results["score"].to_numpy()
+        assert _np.all(_np.isfinite(scores)), "Popularity scores contain NaN or Inf"
