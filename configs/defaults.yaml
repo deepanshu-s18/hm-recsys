@@ -1,0 +1,48 @@
+# Default hyperparameter configuration for the H&M recommendation pipeline
+# Override via CLI: python scripts/train.py --als-factors 128
+
+data:
+  n_interactions: 500_000       # Number of interactions to sample
+  k_core: 5                     # Minimum interactions per user/item (5-core)
+  val_weeks: 16                 # Validation window width (weeks)
+  test_weeks: 12                # Test window width (weeks)
+  random_seed: 42
+
+retrieval:
+  top_k_per_retriever: 100      # Candidates per retriever before fusion
+  n_candidates: 200             # Final candidate pool size after RRF
+
+popularity:
+  half_life_days: 30            # Exponential decay half-life for recency scoring
+  min_interactions: 3           # Minimum interactions for item eligibility
+
+als:
+  factors: 64                   # Latent factor dimensionality
+  iterations: 20                # ALS training iterations
+  regularization: 0.01          # L2 regularization coefficient
+  alpha: 40                     # Implicit confidence scaling (C = 1 + alpha * count)
+  use_gpu: false
+
+two_tower:
+  embedding_dim: 64             # User/item embedding dimension
+  hidden_dim: 128               # MLP hidden layer size
+  epochs: 10                    # Training epochs
+  batch_size: 2048              # In-batch negative sample size
+  learning_rate: 0.001
+  temperature: 0.07             # InfoNCE softmax temperature
+  log_q_correction: true        # Enable popularity debiasing (Yi et al. 2019)
+
+ranker:
+  n_estimators: 200             # LightGBM number of trees
+  learning_rate: 0.05
+  num_leaves: 63
+  objective: "lambdarank"       # Direct NDCG optimization
+  ndcg_eval_at: [12]            # Evaluation cutoff
+  early_stopping_rounds: 20
+  force_col_wise: true          # Required for macOS ARM thread safety
+  num_threads: 1
+
+evaluation:
+  top_k: 12                     # Recommendation list cutoff
+  n_bootstrap: 1000             # Bootstrap CI samples
+  significance_level: 0.05      # Two-sided Wilcoxon test threshold
