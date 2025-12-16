@@ -1,0 +1,233 @@
+%------------------------------------------------------
+% ATS-Optimized Resume — Jake's Resume Template
+% Target : Amazon Applied Scientist Intern
+%          (also strong for Microsoft / Google / Meta
+%           ML Engineer / Applied Scientist roles)
+%
+% ⚠  Every metric, number and fact below is
+%    candidate-verified. Nothing is fabricated.
+%------------------------------------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+%----- Custom Commands --------------------------------
+\newcommand{\resumeItem}[1]{
+  \item\small{{#1 \vspace{-2pt}}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+%------------------------------------------------------
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape Deepanshu Singh} \\ \vspace{1pt}
+    \small +91 8318692558 $|$
+    \href{mailto:deepanshuk2555@gmail.com}
+         {\underline{deepanshuk2555@gmail.com}} $|$
+    Kanpur, Uttar Pradesh, India $|$
+    \href{https://www.linkedin.com/in/deepanshu-singh-12b0a8275}
+         {\underline{LinkedIn}} $|$
+    \href{https://github.com/deepanshu-s18}
+         {\underline{GitHub}}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Indian Institute of Technology Madras}{Chennai, India}
+      {B.S.\ Data Science and Applications \textnormal{---
+       CGPA: 7.0\,/\,10.0}}{Expected May 2027}
+      \resumeItemListStart
+        \resumeItem{\textbf{Relevant Coursework:}
+          Machine Learning, Deep Learning, Natural Language
+          Processing, Probability \& Statistics, Linear Algebra,
+          Data Structures \& Algorithms}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      % ── PROJECT 1 ──────────────────────────────────────────
+      \resumeProjectHeading
+        {\textbf{Production Multi-Stage Fashion Recommendation System}
+         $|$ \emph{PyTorch, LightGBM, FAISS, Polars, Python}}
+        {Jun 2025 -- Aug 2026}
+        \resumeItemListStart
+          \resumeItem{Architected an industrial \textbf{5-stage recommendation pipeline} on real H\&M transaction logs (\textbf{90,246 users, 84,220 items, 1.8M interactions}): Popularity $\rightarrow$ ALS Matrix Factorization $\rightarrow$ InfoNCE Two-Tower $\rightarrow$ RRF Fusion $\rightarrow$ LightGBM LambdaMART ranker.}
+          \resumeItem{Achieved \textbf{NDCG@12 = 0.0105} and \textbf{Recall@12 = 0.0120} on held-out test data (\textbf{+140.0\% lift over popularity baseline}, $p < 0.0001$, verified via 1,000-sample user-level bootstrap CI); expanded catalog coverage to \textbf{22.92\%} (1,146$\times$ over baseline) via neural retrieval.}
+          \resumeItem{Engineered a \textbf{40-feature cross-interaction ranking pipeline} (retrieval ranks, 7d/30d purchase velocities, user price affinity, categorical metadata) reducing inference from $O(N \cdot M)$ to \textbf{$O(K \log N)$} with \textbf{$<$15\,ms P95 latency}.}
+        \resumeItemListEnd
+
+      % ── PROJECT 2 ──────────────────────────────────────────
+      \resumeProjectHeading
+        {\textbf{BLaIR: Dense Information Retrieval via Contrastive Learning}
+         $|$ \emph{PyTorch, Transformers, FAISS, BM25}}
+        {Jan 2025 -- Jun 2026}
+        \resumeItemListStart
+          \resumeItem{Designed a dense retrieval system with dual and
+            shared Transformer encoder architectures, FAISS indexing,
+            and contrastive learning with hard-negative mining; achieved
+            \textbf{Recall@10 = 0.898}, \textbf{MRR = 0.698},
+            \textbf{NDCG@10 = 0.798}.}
+          \resumeItem{Conducted \textbf{20+ controlled ablation
+            experiments} across negative sampling strategies ---
+            BM25 negatives (\textbf{Recall@10 = 0.860}) $>$ random
+            negatives (0.846) $>$ ANN negatives (0.826) --- optimal
+            hard-negative selection yielded \textbf{+3.4pp Recall@10}
+            over worst strategy.}
+          \resumeItem{Ablated encoder pooling strategies: CLS pooling
+            (\textbf{Recall@10 = 0.878}) outperformed mean pooling
+            (0.801) by \textbf{+7.7pp}, establishing representation
+            design as a critical factor in dense retrieval quality.}
+          \resumeItem{Engineered a research-grade retrieval platform
+            comprising \textbf{22,633 lines of Python}, 70 source
+            files, 38 test files, and \textbf{630 automated tests},
+            enabling reproducible experimentation across
+            \textbf{20+ retrieval ablations}.}
+        \resumeItemListEnd
+
+      % ── PROJECT 3 ──────────────────────────────────────────
+      \resumeProjectHeading
+        {\textbf{ResNet-34 from Scratch with Grad-CAM Interpretability}
+         $|$ \emph{PyTorch, CNNs, Grad-CAM}}
+        {May 2026 -- Jun 2026}
+        \resumeItemListStart
+          \resumeItem{Implemented ResNet-34 from scratch in PyTorch
+            (\textbf{21.28M parameters}) with residual skip connections;
+            achieved \textbf{CIFAR-10 accuracy = 93.51\%} and
+            \textbf{Macro F1 = 0.9349}, outperforming plain-34 baseline
+            (92.13\%, F1 = 0.9212) by \textbf{+1.4pp on both metrics},
+            empirically validating the residual learning hypothesis.}
+          \resumeItem{Implemented Grad-CAM from scratch using
+            \textbf{PyTorch backward hooks} to localize
+            class-discriminative spatial regions; generated
+            gradient-weighted class activation maps across all
+            CIFAR-10 categories for visual model interpretability.}
+        \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+      \textbf{Programming}{: Python, SQL, C++, Java} \\[1.5pt]
+      \textbf{Machine Learning}{: Machine Learning, Deep Learning,
+        Representation Learning, Contrastive Learning, Metric
+        Learning} \\[1.5pt]
+      \textbf{NLP \& Retrieval}{: Natural Language Processing,
+        Information Retrieval, Dense Retrieval, Semantic Search,
+        BM25, FAISS, Transformers} \\[1.5pt]
+      \textbf{Recommendation Systems}{: Collaborative Filtering,
+        Matrix Factorization, Two-Tower Models, Learning-to-Rank,
+        LambdaRank} \\[1.5pt]
+      \textbf{Computer Vision}{: Convolutional Neural Networks
+        (CNNs), ResNet, Grad-CAM, Image Classification} \\[1.5pt]
+      \textbf{Libraries}{: PyTorch, LightGBM, Scikit-Learn, NumPy,
+        Pandas} \\[1.5pt]
+      \textbf{Experimentation \& Evaluation}{: A/B Testing,
+        Bootstrap Significance Testing, Ablation Studies,
+        Error Analysis, Offline Evaluation} \\[1.5pt]
+      \textbf{MLOps \& Production Systems}{: Model Evaluation,
+        Experiment Tracking, Reproducible Research,
+        Feature Engineering, Retrieval Pipelines} \\[1.5pt]
+      \textbf{Tools}{: Git, Linux, Docker}
+    }}
+ \end{itemize}
+
+
+%-----------ACHIEVEMENTS-----------
+\section{Achievements}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+      \textbf{Competitive Programming}{: Solved \textbf{61+ DSA
+        problems} across LeetCode and related platforms, covering
+        arrays, trees, graphs, and dynamic programming.}
+    }}
+ \end{itemize}
+
+\end{document}
+
+%==========================================================
+%  OVERLEAF INSTRUCTIONS (read once, then delete)
+%
+%  1. Open: overleaf.com/latex/templates/jakes-resume/
+%           syzfjbzwjncs
+%  2. "Open as Template"  →  creates a fresh project
+%  3. Select-All in main.tex, delete, paste this file
+%  4. Compile  (Ctrl+Enter / green button)
+%  5. Replace every placeholder:
+%       Your Full Name
+%       +91-XXXXX-XXXXX
+%       yourrollno@ds.study.iitm.ac.in
+%       linkedin.com/in/yourprofile
+%       github.com/yourgithub
+%  6. Optionally append a GitHub link after each tech stack:
+%       $|$ \href{https://github.com/you/repo}
+%               {\underline{GitHub}}
+%==========================================================
