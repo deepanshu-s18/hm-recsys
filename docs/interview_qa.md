@@ -27,7 +27,7 @@ Quick reference for Amazon Applied Scientist interviews.
 ## "Why does your Two-Tower barely move recall (−0.4% ablation)?"
 
 The Two-Tower's value is **catalog diversity, not raw recall**:
-- Provides **22.92% catalog coverage** vs 0.02% for popularity (1,146× higher)
+- Provides **22.92% catalog coverage** vs 0.02% for popularity (1,073× higher)
 - Surfaces long-tail items that ALS (collaborative filtering) cannot — ALS only
   recommends items seen in training co-occurrence; Two-Tower generalizes via embeddings
 - In downstream LambdaMART ranking, Two-Tower candidates carry semantic signal that
@@ -42,7 +42,7 @@ LambdaMART's virtual gradients are proportional to ΔNDCG — errors at position
 incur 20× larger gradients than errors at position 12. This directly optimizes
 the evaluation metric we care about.
 
-**Evidence**: Removing the ranker drops Recall@12 by **47.3%** in our ablation.
+**Evidence**: Removing the ranker drops Recall@12 by **31.3%** in our ablation.
 
 ---
 

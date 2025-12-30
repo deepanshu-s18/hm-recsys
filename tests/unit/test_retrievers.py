@@ -380,26 +380,29 @@ class TestCandidateFusion:
 class TestPopularityEdgeCases:
     """Edge case tests for PopularityRetriever."""
 
-    def test_retrieve_returns_global_popular_for_cold_user(self, tiny_dataset):
+    def test_retrieve_returns_global_popular_for_cold_user(self) -> None:
         """Cold users (no history) should receive globally popular items."""
-        retriever = PopularityRetriever(top_k=10)
-        retriever.fit(tiny_dataset)
-        # Use a user_idx that has no training interactions
-        cold_user_ids = np.array([999999])
-        # Should not raise — falls back to global popularity
-        try:
-            results = retriever.retrieve(cold_user_ids, top_k=5)
-            assert results is not None
-        except Exception:
-            # Acceptable if retriever filters unknown users cleanly
-            pass
+        from src.retrievers.popularity import PopularityRetriever
 
-    def test_all_scores_finite(self, tiny_dataset):
+        df = _make_interaction_df(n_users=100, n_items=200)
+        retriever = PopularityRetriever(top_k=10)
+        retriever.fit(df, n_users=100, n_items=200)
+        cold_user_ids = [999999]
+        results = retriever.get_candidates(cold_user_ids, exclude_seen=False)
+        assert results is not None
+        assert isinstance(results, pl.DataFrame)
+        assert len(results) == 10
+
+    def test_all_scores_finite(self) -> None:
         """All popularity scores must be finite (no NaN/Inf from log decay)."""
-        import numpy as _np
+        from src.retrievers.popularity import PopularityRetriever
+
+        df = _make_interaction_df(n_users=100, n_items=200)
         retriever = PopularityRetriever(top_k=20)
-        retriever.fit(tiny_dataset)
-        user_ids = tiny_dataset.train["user_idx"].unique().to_numpy()[:10]
-        results = retriever.retrieve(user_ids, top_k=10)
+        retriever.fit(df, n_users=100, n_items=200)
+        user_ids = list(range(10))
+        results = retriever.get_candidates(user_ids, exclude_seen=False)
         scores = results["score"].to_numpy()
-        assert _np.all(_np.isfinite(scores)), "Popularity scores contain NaN or Inf"
+        assert np.all(np.isfinite(scores)), "Popularity scores contain NaN or Inf"
+
+

@@ -37,14 +37,14 @@ Evaluated on held-out chronological test split (48,762 users, 452,643 interactio
 | Experiment | Recall@12 | NDCG@12 | Δ Recall | Key Insight |
 |:---|:---:|:---:|:---:|:---|
 | **Full Pipeline** (all 3 + ranker) | **0.0120** | **0.0105** | — | All components in synergy |
-| Without Ranker (RRF only) | 0.0063 | 0.0057 | **−47.3%** | Ranker is the single biggest driver |
+| Without Ranker (RRF only) | 0.0082 | 0.0073 | **−31.3%** | Ranker is the single biggest driver |
 | Without ALS | 0.0107 | 0.0094 | **−10.6%** | ALS anchors collaborative personalization |
 | Without Two-Tower | 0.0119 | 0.0105 | −0.4% | Two-Tower adds catalog diversity (+22.9% coverage) |
 | Without Popularity | 0.0122 | 0.0107 | +2.1% | Popularity can hurt; trending bias is real |
 | 100 Candidates (vs 200) | 0.0122 | 0.0108 | +2.7% | Candidate pool depth is a tuning lever |
 | Popularity Only (pure baseline) | 0.0050 | 0.0048 | **−58.2%** | Non-personalized floor |
 
-**Headline finding:** Removing the LambdaMART ranker drops Recall@12 by **47.3%** — the largest single component contribution. This validates the two-stage retrieval-then-ranking architecture.
+**Headline finding:** Removing the LambdaMART ranker drops Recall@12 by **31.3%** — the largest single component contribution. This validates the two-stage retrieval-then-ranking architecture.
 
 ---
 

@@ -115,10 +115,10 @@
       \resumeProjectHeading
         {\textbf{Production Multi-Stage Fashion Recommendation System}
          $|$ \emph{PyTorch, LightGBM, FAISS, Polars, Python}}
-        {Jun 2025 -- Aug 2026}
+        {Sep 2025 -- Dec 2025}
         \resumeItemListStart
           \resumeItem{Architected an industrial \textbf{5-stage recommendation pipeline} on real H\&M transaction logs (\textbf{90,246 users, 84,220 items, 1.8M interactions}): Popularity $\rightarrow$ ALS Matrix Factorization $\rightarrow$ InfoNCE Two-Tower $\rightarrow$ RRF Fusion $\rightarrow$ LightGBM LambdaMART ranker.}
-          \resumeItem{Achieved \textbf{NDCG@12 = 0.0105} and \textbf{Recall@12 = 0.0120} on held-out test data (\textbf{+140.0\% lift over popularity baseline}, $p < 0.0001$, verified via 1,000-sample user-level bootstrap CI); expanded catalog coverage to \textbf{22.92\%} (1,146$\times$ over baseline) via neural retrieval.}
+          \resumeItem{Achieved \textbf{NDCG@12 = 0.0105} and \textbf{Recall@12 = 0.0120} on held-out test data (\textbf{+140.0\% lift over popularity baseline}, $p < 0.0001$, verified via 1,000-sample user-level bootstrap CI); expanded catalog coverage to \textbf{22.92\%} (1,073$\times$ over baseline) via neural retrieval.}
           \resumeItem{Engineered a \textbf{40-feature cross-interaction ranking pipeline} (retrieval ranks, 7d/30d purchase velocities, user price affinity, categorical metadata) reducing inference from $O(N \cdot M)$ to \textbf{$O(K \log N)$} with \textbf{$<$15\,ms P95 latency}.}
         \resumeItemListEnd
 
