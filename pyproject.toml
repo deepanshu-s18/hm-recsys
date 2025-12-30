@@ -7,7 +7,28 @@ name = "hm-recsys"
 version = "1.0.0"
 description = "Production-grade multi-stage recommendation system for H&M fashion dataset"
 requires-python = ">=3.10"
-dependencies = [ "polars>=0.20", "torch>=2.0", "lightgbm>=4.0", "implicit>=0.7", "faiss-cpu>=1.7", "hydra-core>=1.3", "omegaconf>=2.3", "loguru>=0.7", "typer>=0.9", "scipy>=1.11", "scikit-learn>=1.3", "numpy>=1.24", "pandas>=2.0", "tqdm>=4.66", "matplotlib>=3.7", "seaborn>=0.13", "shap>=0.44", "umap-learn>=0.5", "rich>=13.0",]
+dependencies = [
+    "polars>=0.20",
+    "pyarrow>=14.0",
+    "torch>=2.0",
+    "lightgbm>=4.0",
+    "implicit>=0.7",
+    "faiss-cpu>=1.7",
+    "hydra-core>=1.3",
+    "omegaconf>=2.3",
+    "loguru>=0.7",
+    "typer>=0.9",
+    "scipy>=1.11",
+    "scikit-learn>=1.3",
+    "numpy>=1.24,<2.0",
+    "pandas>=2.0",
+    "tqdm>=4.66",
+    "matplotlib>=3.7",
+    "seaborn>=0.13",
+    "shap>=0.44",
+    "umap-learn>=0.5",
+    "rich>=13.0",
+]
 [[project.authors]]
 name = "Applied Scientist"
 

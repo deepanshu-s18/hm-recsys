@@ -24,19 +24,17 @@ def _make_interaction_df(n_users: int = 100, n_items: int = 200, n_rows: int = 1
     Returns:
         Polars DataFrame with columns [user_idx, item_idx, t_dat, price].
     """
-    import pandas as pd
-
     rng = np.random.default_rng(42)
-    start = pd.Timestamp("2020-01-01")
+    t_dat_strings = [f"2020-01-{(i % 28) + 1:02d}" for i in range(n_rows)]
 
-    return pl.from_pandas(pd.DataFrame({
+    return pl.DataFrame({
         "user_idx": rng.integers(0, n_users, size=n_rows).astype(np.int32),
         "item_idx": rng.integers(0, n_items, size=n_rows).astype(np.int32),
         "customer_id": [f"cust_{i}" for i in rng.integers(0, n_users, size=n_rows)],
         "article_id": [f"art_{i}" for i in rng.integers(0, n_items, size=n_rows)],
-        "t_dat": pd.date_range(start, periods=n_rows, freq="h").date,
+        "t_dat": pl.Series(t_dat_strings).str.to_date(),
         "price": rng.uniform(0.01, 0.2, size=n_rows).astype(np.float32),
-    }))
+    })
 
 
 class TestPopularityRetriever:
